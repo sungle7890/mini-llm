@@ -1,0 +1,213 @@
+<title>AI 모델 종류 지도</title>
+<style>
+  :root{
+    --bg:#f3f6f6; --surface:#ffffff; --ink:#182024; --muted:#586670;
+    --border:#e1e7e8; --hair:#eceff0;
+    --accent:#0e7c86;                 /* 청록 primary */
+    --c1:#b07515;   /* ① 고전 ML (앰버) */
+    --c2:#0e7c86;   /* ② 신경망 (청록) */
+    --c3:#7350c0;   /* ③ 생성모델 (보라) */
+    --code-bg:#eef2f2; --code-ink:#243036; --hi:#e9f4f5; --hi-bd:#bfe0e3;
+    --shadow:rgba(20,30,34,.07);
+    --sans:system-ui,-apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0f1416; --surface:#161d20; --ink:#e6ebec; --muted:#92a0a6;
+      --border:#253033; --hair:#1f282b;
+      --accent:#3fb6c0; --c1:#e0a94a; --c2:#3fb6c0; --c3:#a88fe6;
+      --code-bg:#0c1214; --code-ink:#cdd6d9; --hi:#10262a; --hi-bd:#274a4f;
+      --shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1416; --surface:#161d20; --ink:#e6ebec; --muted:#92a0a6;
+    --border:#253033; --hair:#1f282b;
+    --accent:#3fb6c0; --c1:#e0a94a; --c2:#3fb6c0; --c3:#a88fe6;
+    --code-bg:#0c1214; --code-ink:#cdd6d9; --hi:#10262a; --hi-bd:#274a4f;
+    --shadow:rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"]{
+    --bg:#f3f6f6; --surface:#ffffff; --ink:#182024; --muted:#586670;
+    --border:#e1e7e8; --hair:#eceff0;
+    --accent:#0e7c86; --c1:#b07515; --c2:#0e7c86; --c3:#7350c0;
+    --code-bg:#eef2f2; --code-ink:#243036; --hi:#e9f4f5; --hi-bd:#bfe0e3;
+    --shadow:rgba(20,30,34,.07);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;
+    -webkit-font-smoothing:antialiased;margin:0;font-size:17px;letter-spacing:-.003em}
+  .wrap{max-width:840px;margin:0 auto;padding:0 22px 90px}
+
+  header.hero{padding:70px 0 30px;border-bottom:1px solid var(--border)}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 16px;font-weight:600}
+  h1{font-size:clamp(30px,5.2vw,46px);line-height:1.1;margin:0 0 16px;font-weight:800;
+    letter-spacing:-.02em;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);margin:0;max-width:62ch}
+
+  section{padding:38px 0;border-bottom:1px solid var(--hair)}
+  .axis{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;color:var(--accent);
+    font-weight:700;margin:0 0 8px;text-transform:uppercase}
+  h2{font-size:25px;font-weight:800;letter-spacing:-.015em;margin:0 0 4px;text-wrap:balance}
+  .sub{color:var(--muted);margin:.2em 0 1.1em}
+  p{margin:1em 0}
+  strong{font-weight:700}
+  em{font-style:normal;color:var(--accent);font-weight:600}
+  code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);border:1px solid var(--border);
+    border-radius:5px;padding:1px 5px}
+
+  .scroll{overflow-x:auto;margin:18px 0;border:1px solid var(--border);border-radius:10px}
+  table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--hair);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:12px;letter-spacing:.03em;text-transform:uppercase;
+    color:var(--muted);font-weight:600;background:color-mix(in oklab,var(--surface) 82%,var(--bg));white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+
+  /* 계열 카드 (Axis 2) */
+  .fam{display:grid;gap:14px;margin:18px 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    border-left:4px solid var(--cat);padding:16px 18px 6px;box-shadow:0 1px 3px var(--shadow)}
+  .card h3{margin:0 0 4px;font-size:18px;font-weight:800;display:flex;align-items:baseline;gap:9px}
+  .card h3 .n{font-family:var(--mono);color:var(--cat);font-size:15px}
+  .card h3 .tag{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--cat);font-weight:700;border:1px solid var(--cat);
+    border-radius:999px;padding:2px 9px;opacity:.9}
+  .card ul{margin:.6em 0 1em;padding-left:0;list-style:none;display:grid;gap:7px}
+  .card li{padding-left:16px;position:relative;font-size:15.5px}
+  .card li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--cat)}
+  .card li b{font-weight:700}
+  .card li .ours{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .c1{--cat:var(--c1)} .c2{--cat:var(--c2)} .c3{--cat:var(--c3)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+  .chip{font-size:14px;border:1px solid var(--border);background:var(--surface);border-radius:999px;
+    padding:5px 13px;color:var(--ink)}
+
+  .callout{background:var(--hi);border:1px solid var(--hi-bd);border-left:3px solid var(--accent);
+    border-radius:10px;padding:16px 20px;margin:22px 0}
+  .callout p{margin:.4em 0}
+  .callout .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700}
+
+  footer{padding:34px 0 0;color:var(--muted);font-size:14px}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px;font-size:13px}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:10px;height:10px;border-radius:50%}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">머신러닝 · 분류 지도</p>
+    <h1>AI 모델 종류 지도</h1>
+    <p class="lede">인공지능/머신러닝 모델을 <em>세 가지 축</em>으로 정리한 지도.
+      이 프로젝트에서 밑바닥부터 만든 것들(세기 모델·MLP·Transformer·부스팅)을 기준점으로 삼았다.</p>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--c1)"></i>① 고전 ML</span>
+      <span><i class="dot" style="background:var(--c2)"></i>② 신경망</span>
+      <span><i class="dot" style="background:var(--c3)"></i>③ 생성모델</span>
+    </div>
+  </header>
+
+  <section>
+    <p class="axis">축 1</p>
+    <h2>"어떻게 배우나" — 학습 패러다임</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>종류</th><th>뜻</th><th>예 (이 프로젝트)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>지도학습</strong><br>Supervised</td><td>정답 라벨을 주고 배움</td><td>주식 방향예측(분류), 이미지 분류</td></tr>
+        <tr><td><strong>비지도학습</strong><br>Unsupervised</td><td>라벨 없이 구조만 발견</td><td>군집화, 이상탐지</td></tr>
+        <tr><td><strong>자기지도학습</strong><br>Self-supervised</td><td>데이터가 스스로 정답 (다음 토큰)</td><td>언어모델(한글/bible)</td></tr>
+        <tr><td><strong>강화학습</strong><br>Reinforcement</td><td>보상으로 배움</td><td>RLHF, 알파고, 게임 AI</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <p class="axis">축 2</p>
+    <h2>"무엇으로 만드나" — 모델 구조</h2>
+    <p class="sub">보통 "모델 종류"라고 하면 이걸 가리킨다. 세 계열로 나뉜다.</p>
+    <div class="fam">
+      <div class="card c1">
+        <h3><span class="n">①</span> 고전 ML <span class="tag">딥러닝 이전 · 지금도 강력</span></h3>
+        <ul>
+          <li><b>통계/세기</b>: 빈도표, 나이브베이즈 <span class="ours">— 이 프로젝트 01_bigram · 로또 09/10</span></li>
+          <li><b>선형/로지스틱 회귀</b> — 가장 단순한 예측기</li>
+          <li><b>k-NN</b> — 가까운 이웃 보고 판단</li>
+          <li><b>결정트리 → 랜덤포레스트 → 그래디언트 부스팅(XGBoost·LightGBM)</b> — 표 데이터엔 아직도 최강 <span class="ours">— 이 프로젝트 17/18</span></li>
+          <li><b>SVM</b>, <b>k-means</b>(군집)</li>
+        </ul>
+      </div>
+      <div class="card c2">
+        <h3><span class="n">②</span> 신경망 (딥러닝) <span class="tag">deep learning</span></h3>
+        <ul>
+          <li><b>MLP</b> (다층 퍼셉트론) <span class="ours">— 이 프로젝트 02_mlp · 주식 12~16</span></li>
+          <li><b>CNN</b> (합성곱) — 이미지에 특화</li>
+          <li><b>RNN / LSTM</b> — 순차 데이터(옛날, 지금은 Transformer로 대체)</li>
+          <li><b>Transformer</b> — 현대 LLM(GPT·Claude)의 뼈대 <span class="ours">— 이 프로젝트 03</span></li>
+        </ul>
+      </div>
+      <div class="card c3">
+        <h3><span class="n">③</span> 생성모델 <span class="tag">요즘 핵심</span></h3>
+        <ul>
+          <li><b>자기회귀 (Autoregressive, GPT류)</b> — 텍스트를 한 토큰씩 생성 <span class="ours">— 이 프로젝트 Transformer</span></li>
+          <li><b>디퓨전 (Diffusion)</b> — 이미지·영상 생성 (Stable Diffusion, DALL·E, Sora)</li>
+          <li><b>GAN</b> — 이미지 생성(옛날, 두 신경망 경쟁)</li>
+          <li><b>VAE</b> — 압축·생성</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="axis">축 3</p>
+    <h2>"무슨 일을 하나" — 과제</h2>
+    <div class="chips">
+      <span class="chip">분류 classification</span>
+      <span class="chip">회귀 regression</span>
+      <span class="chip">생성 generation</span>
+      <span class="chip">군집 clustering</span>
+      <span class="chip">탐지 detection</span>
+      <span class="chip">분할 segmentation</span>
+      <span class="chip">순위·추천 ranking</span>
+      <span class="chip">번역 translation</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="axis">실전</p>
+    <h2>"언제 뭘 쓰나"</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>데이터 / 문제</th><th>주로 쓰는 것</th></tr></thead>
+      <tbody>
+        <tr><td><strong>표(엑셀형) 데이터</strong></td><td>그래디언트 부스팅(XGBoost) ← 딥러닝보다 자주 이김</td></tr>
+        <tr><td><strong>이미지</strong></td><td>CNN, (생성은) Diffusion</td></tr>
+        <tr><td><strong>텍스트·시퀀스</strong></td><td>Transformer (LLM)</td></tr>
+        <tr><td><strong>음성</strong></td><td>Transformer / CNN 계열</td></tr>
+        <tr><td><strong>적은 데이터 / 빠른 baseline</strong></td><td>로지스틱 회귀, 랜덤포레스트</td></tr>
+        <tr><td><strong>정답 없는 탐색</strong></td><td>k-means, 차원축소(PCA)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section style="border-bottom:none">
+    <p class="axis">한 줄 지도</p>
+    <h2>도구는 데이터에 맞춰 고른다</h2>
+    <p>"AI = LLM" 이미지가 강하지만, 실제론 <strong>표 데이터는 부스팅, 이미지는 CNN/디퓨전,
+      텍스트는 Transformer</strong>처럼 문제마다 강한 모델이 다르다. "무조건 딥러닝/LLM"이 아니라
+      <em>데이터 종류에 맞는 도구</em>를 고르는 게 핵심.</p>
+    <div class="callout">
+      <p class="lbl">이 프로젝트가 반복해서 보여준 것</p>
+      <p><strong>모델을 바꾸는 건 "신호가 있는데 못 뽑을 때"만 도움이 된다.</strong> 신호가 없으면(복권)
+        어떤 모델도 소용없고, 신호가 약하면(주식) 더 강한 모델(XGBoost)로 바꿔도 out-of-sample은
+        그대로이며 오히려 과적합(착시)만 커진다.</p>
+    </div>
+    <footer>
+      <p>관련 실험 · <code>11_lottery_nn</code>(복권+신경망) · <code>12~18</code>(주식 MLP·XGBoost) ·
+        <code>01~08</code>(세기 모델 → 미니 GPT)</p>
+    </footer>
+  </section>
+
+</div>

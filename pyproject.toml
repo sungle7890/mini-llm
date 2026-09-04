@@ -1,0 +1,17 @@
+[project]
+name = "mini-llm"
+version = "0.1.0"
+description = "밑바닥부터 만드는 미니 LLM (순수 NumPy, 역전파 직접 구현)"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11.1",
+    "numpy>=2.5.2",
+    "scikit-learn>=1.9.0",
+    "xgboost>=3.4.1",
+]
+
+# 이 프로젝트는 배포용 라이브러리가 아니라 '학습용 스크립트 모음'이다.
+# 그래서 빌드/패키징을 끄고, uv를 그냥 '가상환경 + 의존성 관리자'로만 쓴다.
+[tool.uv]
+package = false

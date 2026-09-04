@@ -1,0 +1,26 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# macOS
+.DS_Store
+
+# Trained models (regenerable by the *_train scripts)
+*.npz
+*.pkl
+
+# Downloaded / generated data (regenerable by fetch_data.py and the scripts)
+*_data.json
+*_data.csv
+*_trades_2026.csv
+
+# Large / source corpora kept local (bible.txt is built from the bible/ folder)
+bible/
+bible.txt

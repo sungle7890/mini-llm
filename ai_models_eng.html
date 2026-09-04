@@ -1,0 +1,211 @@
+<title>A Map of AI Model Types</title>
+<style>
+  :root{
+    --bg:#f3f6f6; --surface:#ffffff; --ink:#182024; --muted:#586670;
+    --border:#e1e7e8; --hair:#eceff0;
+    --accent:#0e7c86;
+    --c1:#b07515; --c2:#0e7c86; --c3:#7350c0;
+    --code-bg:#eef2f2; --code-ink:#243036; --hi:#e9f4f5; --hi-bd:#bfe0e3;
+    --shadow:rgba(20,30,34,.07);
+    --sans:system-ui,-apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0f1416; --surface:#161d20; --ink:#e6ebec; --muted:#92a0a6;
+      --border:#253033; --hair:#1f282b;
+      --accent:#3fb6c0; --c1:#e0a94a; --c2:#3fb6c0; --c3:#a88fe6;
+      --code-bg:#0c1214; --code-ink:#cdd6d9; --hi:#10262a; --hi-bd:#274a4f;
+      --shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1416; --surface:#161d20; --ink:#e6ebec; --muted:#92a0a6;
+    --border:#253033; --hair:#1f282b;
+    --accent:#3fb6c0; --c1:#e0a94a; --c2:#3fb6c0; --c3:#a88fe6;
+    --code-bg:#0c1214; --code-ink:#cdd6d9; --hi:#10262a; --hi-bd:#274a4f;
+    --shadow:rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"]{
+    --bg:#f3f6f6; --surface:#ffffff; --ink:#182024; --muted:#586670;
+    --border:#e1e7e8; --hair:#eceff0;
+    --accent:#0e7c86; --c1:#b07515; --c2:#0e7c86; --c3:#7350c0;
+    --code-bg:#eef2f2; --code-ink:#243036; --hi:#e9f4f5; --hi-bd:#bfe0e3;
+    --shadow:rgba(20,30,34,.07);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;
+    -webkit-font-smoothing:antialiased;margin:0;font-size:17px;letter-spacing:-.003em}
+  .wrap{max-width:840px;margin:0 auto;padding:0 22px 90px}
+
+  header.hero{padding:70px 0 30px;border-bottom:1px solid var(--border)}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 16px;font-weight:600}
+  h1{font-size:clamp(30px,5.2vw,46px);line-height:1.1;margin:0 0 16px;font-weight:800;
+    letter-spacing:-.02em;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);margin:0;max-width:62ch}
+
+  section{padding:38px 0;border-bottom:1px solid var(--hair)}
+  .axis{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;color:var(--accent);
+    font-weight:700;margin:0 0 8px;text-transform:uppercase}
+  h2{font-size:25px;font-weight:800;letter-spacing:-.015em;margin:0 0 4px;text-wrap:balance}
+  .sub{color:var(--muted);margin:.2em 0 1.1em}
+  p{margin:1em 0}
+  strong{font-weight:700}
+  em{font-style:normal;color:var(--accent);font-weight:600}
+  code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);border:1px solid var(--border);
+    border-radius:5px;padding:1px 5px}
+
+  .scroll{overflow-x:auto;margin:18px 0;border:1px solid var(--border);border-radius:10px}
+  table{border-collapse:collapse;width:100%;font-size:15px;background:var(--surface)}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--hair);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:12px;letter-spacing:.03em;text-transform:uppercase;
+    color:var(--muted);font-weight:600;background:color-mix(in oklab,var(--surface) 82%,var(--bg));white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+
+  .fam{display:grid;gap:14px;margin:18px 0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    border-left:4px solid var(--cat);padding:16px 18px 6px;box-shadow:0 1px 3px var(--shadow)}
+  .card h3{margin:0 0 4px;font-size:18px;font-weight:800;display:flex;align-items:baseline;gap:9px}
+  .card h3 .n{font-family:var(--mono);color:var(--cat);font-size:15px}
+  .card h3 .tag{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--cat);font-weight:700;border:1px solid var(--cat);
+    border-radius:999px;padding:2px 9px;opacity:.9}
+  .card ul{margin:.6em 0 1em;padding-left:0;list-style:none;display:grid;gap:7px}
+  .card li{padding-left:16px;position:relative;font-size:15.5px}
+  .card li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--cat)}
+  .card li b{font-weight:700}
+  .card li .ours{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .c1{--cat:var(--c1)} .c2{--cat:var(--c2)} .c3{--cat:var(--c3)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+  .chip{font-size:14px;border:1px solid var(--border);background:var(--surface);border-radius:999px;
+    padding:5px 13px;color:var(--ink)}
+
+  .callout{background:var(--hi);border:1px solid var(--hi-bd);border-left:3px solid var(--accent);
+    border-radius:10px;padding:16px 20px;margin:22px 0}
+  .callout p{margin:.4em 0}
+  .callout .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700}
+
+  footer{padding:34px 0 0;color:var(--muted);font-size:14px}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px;font-size:13px}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:10px;height:10px;border-radius:50%}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Machine Learning · Taxonomy Map</p>
+    <h1>A Map of AI Model Types</h1>
+    <p class="lede">A map that organizes AI / machine-learning models along <em>three axes</em>.
+      The reference points are the things built from scratch in this project — counting models,
+      MLP, Transformer, and boosting.</p>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--c1)"></i>① Classical ML</span>
+      <span><i class="dot" style="background:var(--c2)"></i>② Neural networks</span>
+      <span><i class="dot" style="background:var(--c3)"></i>③ Generative models</span>
+    </div>
+  </header>
+
+  <section>
+    <p class="axis">Axis 1</p>
+    <h2>"How does it learn?" — learning paradigm</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Type</th><th>Meaning</th><th>Example (this project)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Supervised</strong></td><td>Learns from given answer labels</td><td>Stock direction prediction (classification), image classification</td></tr>
+        <tr><td><strong>Unsupervised</strong></td><td>Finds structure with no labels</td><td>Clustering, anomaly detection</td></tr>
+        <tr><td><strong>Self-supervised</strong></td><td>The data is its own label (next token)</td><td>Language models (Korean / bible)</td></tr>
+        <tr><td><strong>Reinforcement</strong></td><td>Learns from a reward</td><td>RLHF, AlphaGo, game-playing AI</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <p class="axis">Axis 2</p>
+    <h2>"What is it built from?" — model architecture</h2>
+    <p class="sub">Usually what people mean by "model type." It splits into three families.</p>
+    <div class="fam">
+      <div class="card c1">
+        <h3><span class="n">①</span> Classical ML <span class="tag">pre-deep-learning · still strong</span></h3>
+        <ul>
+          <li><b>Statistics / counting</b>: frequency tables, Naive Bayes <span class="ours">— this project's 01_bigram · lottery 09/10</span></li>
+          <li><b>Linear / logistic regression</b> — the simplest predictors</li>
+          <li><b>k-NN</b> — decide by nearest neighbors</li>
+          <li><b>Decision tree → Random Forest → Gradient Boosting (XGBoost · LightGBM)</b> — still the strongest for tabular data <span class="ours">— this project's 17/18</span></li>
+          <li><b>SVM</b>, <b>k-means</b> (clustering)</li>
+        </ul>
+      </div>
+      <div class="card c2">
+        <h3><span class="n">②</span> Neural networks (deep learning) <span class="tag">deep learning</span></h3>
+        <ul>
+          <li><b>MLP</b> (multi-layer perceptron) <span class="ours">— this project's 02_mlp · stock 12~16</span></li>
+          <li><b>CNN</b> (convolutional) — specialized for images</li>
+          <li><b>RNN / LSTM</b> — sequential data (older; now mostly replaced by the Transformer)</li>
+          <li><b>Transformer</b> — the backbone of modern LLMs (GPT · Claude) <span class="ours">— this project's 03</span></li>
+        </ul>
+      </div>
+      <div class="card c3">
+        <h3><span class="n">③</span> Generative models <span class="tag">a current focus</span></h3>
+        <ul>
+          <li><b>Autoregressive (GPT-style)</b> — generate text one token at a time <span class="ours">— this project's Transformer</span></li>
+          <li><b>Diffusion</b> — image/video generation (Stable Diffusion, DALL·E, Sora)</li>
+          <li><b>GAN</b> — image generation (older; two networks competing)</li>
+          <li><b>VAE</b> — compression / generation</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="axis">Axis 3</p>
+    <h2>"What does it do?" — task</h2>
+    <div class="chips">
+      <span class="chip">classification</span>
+      <span class="chip">regression</span>
+      <span class="chip">generation</span>
+      <span class="chip">clustering</span>
+      <span class="chip">detection</span>
+      <span class="chip">segmentation</span>
+      <span class="chip">ranking / recommendation</span>
+      <span class="chip">translation</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="axis">In practice</p>
+    <h2>"When do you use what?"</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Data / problem</th><th>What you usually use</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Tabular (spreadsheet-like) data</strong></td><td>Gradient boosting (XGBoost) ← often beats deep learning</td></tr>
+        <tr><td><strong>Images</strong></td><td>CNN, (for generation) Diffusion</td></tr>
+        <tr><td><strong>Text / sequences</strong></td><td>Transformer (LLM)</td></tr>
+        <tr><td><strong>Audio</strong></td><td>Transformer / CNN family</td></tr>
+        <tr><td><strong>Little data / quick baseline</strong></td><td>Logistic regression, Random Forest</td></tr>
+        <tr><td><strong>Exploring without labels</strong></td><td>k-means, dimensionality reduction (PCA)</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section style="border-bottom:none">
+    <p class="axis">One-line map</p>
+    <h2>Choose the tool to fit the data</h2>
+    <p>The image of "AI = LLM" is strong these days, but in reality the strongest model differs by
+      problem: <strong>tabular → boosting, images → CNN/Diffusion, text → Transformer</strong>.
+      The key is not "always deep learning / LLM" but <em>choosing the tool that fits the kind of data</em>.</p>
+    <div class="callout">
+      <p class="lbl">What this project showed again and again</p>
+      <p><strong>Swapping the model only helps when "there is signal but the model can't extract it."</strong>
+        When there is no signal (lottery), no model helps; when the signal is weak (stocks), switching to a
+        stronger model (XGBoost) leaves out-of-sample unchanged and only makes overfitting (the illusion) worse.</p>
+    </div>
+    <footer>
+      <p>Related experiments · <code>11_lottery_nn</code> (lottery + neural net) ·
+        <code>12~18</code> (stock MLP · XGBoost) · <code>01~08</code> (counting model → mini GPT)</p>
+    </footer>
+  </section>
+
+</div>
